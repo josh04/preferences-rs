@@ -173,7 +173,8 @@ extern crate serde_json;
 
 pub use app_dirs::{AppDirsError, AppInfo};
 use app_dirs::{AppDataType, get_data_root, get_app_dir};
-use serde::{Serialize, Deserialize};
+use serde::{Serialize};
+use serde::de::DeserializeOwned;
 use std::collections::HashMap;
 use std::ffi::OsString;
 use std::fmt;
@@ -331,7 +332,7 @@ fn compute_file_path<S: AsRef<str>>(app: &AppInfo, key: S) -> Result<PathBuf, Pr
 }
 
 impl<T> Preferences for T
-    where T: Serialize + Deserialize + Sized
+    where T: Serialize + DeserializeOwned + Sized
 {
     fn save<S>(&self, app: &AppInfo, key: S) -> Result<(), PreferencesError>
         where S: AsRef<str>
